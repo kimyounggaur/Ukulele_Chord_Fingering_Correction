@@ -1,8 +1,10 @@
 node_modules/
-.vercel/
+.git/
 .server.log
 .server.err.log
 .verification/
 test-results/
 playwright-report/
+tests/
+docs/superpowers/
 *.log

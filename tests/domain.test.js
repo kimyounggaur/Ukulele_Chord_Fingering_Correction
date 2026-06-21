@@ -23,6 +23,10 @@ import {
   MovingAverageSmoother,
   StableEvaluationGate,
 } from "../src/stability.js";
+import {
+  calculateJointAngle,
+  getFingerPosture,
+} from "../src/posture.js";
 
 const SOURCE_MANIFEST = JSON.parse(
   readFileSync(new URL("../01 Source/manifest.json", import.meta.url), "utf8"),
@@ -200,6 +204,92 @@ test("evaluateVoicing accepts open and barre source chords", () => {
   assert.equal(barreResult.scoreText, "4/4");
 });
 
+test("finger posture detects overly flat fingertips from landmark angles", () => {
+  assert.equal(
+    calculateJointAngle(
+      { x: 0, y: 0, z: 0 },
+      { x: 0, y: 1, z: 0 },
+      { x: 0, y: 2, z: 0 },
+    ),
+    180,
+  );
+
+  const flatLandmarks = makeLandmarks({
+    5: { x: 0, y: 0, z: 0 },
+    6: { x: 0, y: 1, z: 0 },
+    7: { x: 0, y: 2, z: 0 },
+    8: { x: 0, y: 3, z: 0 },
+  });
+  const flatPosture = getFingerPosture(flatLandmarks, 1);
+  assert.equal(flatPosture.risk, true);
+  assert.equal(flatPosture.riskType, "flat");
+
+  const curvedLandmarks = makeLandmarks({
+    5: { x: 0, y: 0, z: 0 },
+    6: { x: 0, y: 1, z: 0 },
+    7: { x: 0.6, y: 1.6, z: 0 },
+    8: { x: 1.1, y: 1.2, z: 0 },
+  });
+  assert.equal(getFingerPosture(curvedLandmarks, 1).risk, false);
+});
+
+test("evaluateVoicing warns for flat single-note posture but skips barre posture warnings", () => {
+  const flatSingle = evaluateVoicing(
+    [
+      {
+        finger: 3,
+        string: 1,
+        fret: 3,
+        inFretboard: true,
+        posture: { risk: true, riskType: "flat", pipAngle: 178, dipAngle: 175 },
+      },
+    ],
+    CHORDS.C,
+    { strictFinger: true, checkPosture: true },
+  );
+
+  assert.equal(flatSingle.isCorrect, false);
+  assert.equal(flatSingle.requiredResults[0].status, "posture_warning");
+  assert.equal(flatSingle.percent, 75);
+  assert.match(flatSingle.corrections[0].message, /손끝으로 1번줄 3프렛/);
+
+  const postureOff = evaluateVoicing(
+    [
+      {
+        finger: 3,
+        string: 1,
+        fret: 3,
+        inFretboard: true,
+        posture: { risk: true, riskType: "flat", pipAngle: 178, dipAngle: 175 },
+      },
+    ],
+    CHORDS.C,
+    { strictFinger: true, checkPosture: false },
+  );
+  assert.equal(postureOff.isCorrect, true);
+
+  const barre = evaluateVoicing(
+    [
+      {
+        finger: 3,
+        string: 4,
+        fret: 4,
+        inFretboard: true,
+      },
+      {
+        finger: 1,
+        string: 2,
+        fret: 2,
+        inFretboard: true,
+        posture: { risk: true, riskType: "flat", pipAngle: 180, dipAngle: 180 },
+      },
+    ],
+    CHORDS.Bm,
+    { strictFinger: true, checkPosture: true },
+  );
+  assert.equal(barre.isCorrect, true);
+});
+
 test("moving average smoother keeps a rolling pixel average per finger", () => {
   const smoother = new MovingAverageSmoother(3);
   assert.deepEqual(smoother.add(1, { x: 0, y: 0 }), { x: 0, y: 0 });
@@ -226,3 +316,9 @@ test("stable evaluation gate waits 300ms for coaching and 700ms for success", ()
   assert.equal(success.stableEvaluation.signature, "C:correct");
   assert.equal(success.successJustConfirmed, true);
 });
+
+function makeLandmarks(overrides) {
+  return Array.from({ length: 21 }, (_, index) => (
+    overrides[index] ?? { x: index, y: 0, z: 0 }
+  ));
+}

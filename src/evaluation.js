@@ -14,6 +14,7 @@ export function getMutedStrings(chord) {
 
 export function evaluateVoicing(detectedFingers, chord, options = {}) {
   const strictFinger = options.strictFinger ?? false;
+  const checkPosture = options.checkPosture ?? false;
   const requireMute = options.requireMute ?? false;
   const required = getRequiredFingeredNotes(chord);
   const requiredGroups = collectTargetGroups(required);
@@ -30,13 +31,18 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
 
     if (exactIndex !== -1) {
       usedFingerIndexes.add(exactIndex);
+      const postureWarning = checkPosture &&
+        group.targets.length === 1 &&
+        candidates[exactIndex].posture?.risk;
       for (const target of group.targets) {
         requiredResults.push({
           target,
-          status: "correct",
+          status: postureWarning ? "posture_warning" : "correct",
           matchedFinger: candidates[exactIndex],
           delta: { string: 0, fret: 0 },
-          message: `${fingerName(candidates[exactIndex].finger)}가 ${target.string}번줄 ${target.fret}프렛에 있습니다.`,
+          message: postureWarning
+            ? buildPostureMessage(target, candidates[exactIndex])
+            : `${fingerName(candidates[exactIndex].finger)}가 ${target.string}번줄 ${target.fret}프렛에 있습니다.`,
         });
       }
       continue;
@@ -95,11 +101,18 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
     }));
 
   const correctCount = requiredResults.filter((result) => result.status === "correct").length;
-  const score = required.length === 0 ? 1 : correctCount / required.length;
+  const postureWarningCount = requiredResults.filter((result) => result.status === "posture_warning").length;
+  const score = required.length === 0
+    ? 1
+    : (correctCount + postureWarningCount * 0.75) / required.length;
   const isCorrect = correctCount === required.length && extras.length === 0;
   const corrections = [
     ...requiredResults
-      .filter((result) => result.status === "missing" || result.status === "wrong_position")
+      .filter((result) => (
+        result.status === "missing" ||
+        result.status === "wrong_position" ||
+        result.status === "posture_warning"
+      ))
       .map((result) => ({
         finger: result.target.finger,
         from: result.matchedFinger
@@ -118,7 +131,7 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
     })),
   ];
 
-  const statusText = getStatusText(isCorrect, score, candidates.length);
+  const statusText = getStatusText(isCorrect, score, candidates.length, postureWarningCount);
   const signature = createEvaluationSignature(chord, requiredResults, extras);
 
   return {
@@ -223,12 +236,21 @@ function buildMoveMessage(target, current) {
   return `${fingerName(target.finger)}를 ${moveText}${target.string}번줄 ${target.fret}프렛에 놓으세요.`;
 }
 
+function buildPostureMessage(target, current) {
+  const posture = current.posture;
+  const angleText = posture?.pipAngle && posture?.dipAngle
+    ? ` 현재 각도 PIP ${posture.pipAngle}도, DIP ${posture.dipAngle}도입니다.`
+    : "";
+  return `${fingerName(target.finger)}를 조금 더 세워 손끝으로 ${target.string}번줄 ${target.fret}프렛을 누르세요.${angleText}`;
+}
+
 function fingerName(finger) {
   return FINGER_NAMES[finger] ?? `${finger}번 손가락`;
 }
 
-function getStatusText(isCorrect, score, detectedCount) {
+function getStatusText(isCorrect, score, detectedCount, postureWarningCount = 0) {
   if (isCorrect) return "정확합니다";
+  if (postureWarningCount > 0) return "손가락 각도를 세워주세요";
   if (detectedCount === 0) return "손을 지판 위에 올려주세요";
   if (score >= 0.67) return "거의 맞아요";
   return "교정이 필요해요";

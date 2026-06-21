@@ -10,6 +10,7 @@ import {
 } from "./src/fretboard.js";
 import { applyHomography, computeHomography, invertHomography } from "./src/homography.js";
 import { evaluateVoicing } from "./src/evaluation.js";
+import { getFingerPosture } from "./src/posture.js";
 import { MovingAverageSmoother, StableEvaluationGate } from "./src/stability.js";
 
 const CALIBRATION_KEY = "ukuleleFingering.calibration.v1";
@@ -55,6 +56,7 @@ const elements = {
   startPracticeButton: document.querySelector("#startPracticeButton"),
   finishPracticeButton: document.querySelector("#finishPracticeButton"),
   strictFingerToggle: document.querySelector("#strictFingerToggle"),
+  postureToggle: document.querySelector("#postureToggle"),
   muteToggle: document.querySelector("#muteToggle"),
   voiceToggle: document.querySelector("#voiceToggle"),
   debugToggle: document.querySelector("#debugToggle"),
@@ -141,6 +143,7 @@ function bindEvents() {
   elements.canvas.addEventListener("click", handleCanvasClick);
   elements.chordSelect.addEventListener("change", handleChordChange);
   elements.strictFingerToggle.addEventListener("change", resetEvaluationGate);
+  elements.postureToggle.addEventListener("change", resetEvaluationGate);
   elements.muteToggle.addEventListener("change", resetEvaluationGate);
   elements.debugToggle.addEventListener("change", updateDebugVisibility);
   elements.startPracticeButton.addEventListener("click", startPractice);
@@ -286,6 +289,7 @@ function updateDomainState(now) {
   if (state.calibration && chord) {
     state.rawEvaluation = evaluateVoicing(state.detectedFingers, chord, {
       strictFinger: elements.strictFingerToggle.checked,
+      checkPosture: elements.postureToggle.checked,
       requireMute: elements.muteToggle.checked,
     });
     state.stableInfo = state.stableGate.update(state.rawEvaluation, now);
@@ -314,6 +318,7 @@ function detectFingerPositions() {
       const stringNumber = mapped ? getStringFromV(mapped.y) : null;
       const fret = mapped ? getFretFromU(mapped.x, getFretCount()) : null;
       const inFretboard = Boolean(mapped && stringNumber !== null && fret !== null);
+      const posture = getFingerPosture(landmarks, tip.finger);
 
       detected.push({
         trackingId: `${handIndex}-${tip.finger}`,
@@ -329,6 +334,7 @@ function detectFingerPositions() {
         string: stringNumber,
         fret,
         inFretboard,
+        posture,
       });
     }
   });
@@ -394,9 +400,12 @@ function drawTargetsAndArrows() {
 
     ctx.lineWidth = 3;
     ctx.setLineDash(result.status === "missing" ? [8, 6] : []);
-    ctx.strokeStyle = result.status === "correct"
-      ? "rgba(73, 209, 125, 0.95)"
-      : "rgba(102, 199, 255, 0.95)";
+    ctx.strokeStyle = {
+      correct: "rgba(73, 209, 125, 0.95)",
+      posture_warning: "rgba(241, 196, 91, 0.95)",
+      wrong_position: "rgba(241, 196, 91, 0.95)",
+      missing: "rgba(102, 199, 255, 0.95)",
+    }[result.status] ?? "rgba(102, 199, 255, 0.95)";
     ctx.fillStyle = "rgba(102, 199, 255, 0.12)";
     ctx.beginPath();
     ctx.arc(pixel.x, pixel.y, 20, 0, Math.PI * 2);
@@ -436,6 +445,7 @@ function drawHands() {
     const status = statusByTrackingId.get(finger.trackingId) ?? "unknown";
     const color = {
       correct: "#49d17d",
+      posture_warning: "#f1c45b",
       wrong_position: "#f1c45b",
       extra: "#f26b6b",
       unknown: "#f4f6f8",
@@ -452,7 +462,7 @@ function drawHands() {
     ctx.font = "700 15px sans-serif";
     ctx.fillStyle = "#f4f6f8";
     const label = finger.inFretboard
-      ? `${finger.name}: ${finger.string}번줄 ${finger.fret}프렛`
+      ? `${finger.name}: ${finger.string}번줄 ${finger.fret}프렛${finger.posture?.risk ? " · 각도" : ""}`
       : `${finger.name}: 지판 밖`;
     drawLabel(label, finger.pixel.x + 12, finger.pixel.y - 12);
   }
@@ -899,6 +909,7 @@ function updateDebugVisibility() {
         string: finger.string,
         fret: finger.fret,
         inFretboard: finger.inFretboard,
+        posture: finger.posture,
         uv: finger.fretboard
           ? {
               u: Number(finger.fretboard.u.toFixed(2)),

@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
-import { CHORDS } from "../src/chords.js";
+import { CHORD_ORDER, CHORDS } from "../src/chords.js";
 import {
   getFretFromU,
   getFretLines,
@@ -22,6 +23,40 @@ import {
   MovingAverageSmoother,
   StableEvaluationGate,
 } from "../src/stability.js";
+
+const SOURCE_MANIFEST = JSON.parse(
+  readFileSync(new URL("../01 Source/manifest.json", import.meta.url), "utf8"),
+);
+const SOURCE_QUALITY_SUFFIXES = {
+  major: "",
+  seventh: "7",
+  minor: "m",
+  minor7: "m7",
+  sus4: "sus4",
+  major7: "maj7",
+  sixth: "6",
+  "seventh-sus4": "7sus4",
+  add9: "add9",
+  "minor7-flat5": "m7b5",
+  minor6: "m6",
+};
+
+test("source manifest target chords are available in order", () => {
+  const expectedOrder = SOURCE_MANIFEST.images.map((image) => (
+    `${image.root}${SOURCE_QUALITY_SUFFIXES[image.quality]}`
+  ));
+
+  assert.equal(CHORD_ORDER.length, SOURCE_MANIFEST.count);
+  assert.deepEqual(CHORD_ORDER, expectedOrder);
+
+  for (const id of expectedOrder) {
+    assert.ok(CHORDS[id], `${id} should be registered`);
+    assert.deepEqual(
+      CHORDS[id].strings.map((note) => note.string),
+      [4, 3, 2, 1],
+    );
+  }
+});
 
 test("chords use ukulele G-C-E-A voicings in string order 4 to 1", () => {
   assert.deepEqual(
@@ -146,6 +181,23 @@ test("evaluateVoicing reports wrong positions, missing notes, extras, and number
   const missing = evaluateVoicing([], CHORDS.C, { strictFinger: true });
   assert.equal(missing.requiredResults[0].status, "missing");
   assert.match(missing.corrections[0].message, /손을 지판 위에 올려주세요|약지를 1번줄 3프렛/);
+});
+
+test("evaluateVoicing accepts open and barre source chords", () => {
+  const openResult = evaluateVoicing([], CHORDS.C6, { strictFinger: true });
+  assert.equal(openResult.isCorrect, true);
+  assert.equal(openResult.scoreText, "0/0");
+
+  const barreResult = evaluateVoicing(
+    [
+      { finger: 3, string: 4, fret: 4, inFretboard: true },
+      { finger: 1, string: 2, fret: 2, inFretboard: true },
+    ],
+    CHORDS.Bm,
+    { strictFinger: true },
+  );
+  assert.equal(barreResult.isCorrect, true);
+  assert.equal(barreResult.scoreText, "4/4");
 });
 
 test("moving average smoother keeps a rolling pixel average per finger", () => {

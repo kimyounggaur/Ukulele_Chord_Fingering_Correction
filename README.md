@@ -17,7 +17,7 @@ npm run dev
 - MediaPipe Tasks Vision Hand Landmarker 기반 손끝 추적
 - 우쿨렐레 4줄(G-C-E-A) 지판 수동 캘리브레이션
 - 손끝을 `N번줄 N프렛`으로 매핑
-- C, Am, F, G, A, D, Dm, C7, G7, Em 코드 판정
+- `01 Source` 자료 기준 80개 목표 코드 판정
 - 한국어 교정 문구, 음성 안내, 스무딩, 홀드 게이트
 - 코드 진행 연습 모드와 간단한 세션 리포트
 

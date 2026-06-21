@@ -16,60 +16,65 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
   const strictFinger = options.strictFinger ?? false;
   const requireMute = options.requireMute ?? false;
   const required = getRequiredFingeredNotes(chord);
+  const requiredGroups = collectTargetGroups(required);
   const mutedStrings = getMutedStrings(chord);
   const candidates = normalizeDetected(detectedFingers);
   const usedFingerIndexes = new Set();
   const requiredResults = [];
 
-  for (const target of required) {
+  for (const group of requiredGroups) {
     const exactIndex = candidates.findIndex((candidate, index) => {
       if (usedFingerIndexes.has(index)) return false;
-      return candidate.string === target.string &&
-        candidate.fret === target.fret &&
-        (!strictFinger || candidate.finger === target.finger);
+      return matchesTargetGroup(candidate, group, strictFinger);
     });
 
     if (exactIndex !== -1) {
       usedFingerIndexes.add(exactIndex);
-      requiredResults.push({
-        target,
-        status: "correct",
-        matchedFinger: candidates[exactIndex],
-        delta: { string: 0, fret: 0 },
-        message: `${fingerName(candidates[exactIndex].finger)}가 ${target.string}번줄 ${target.fret}프렛에 있습니다.`,
-      });
+      for (const target of group.targets) {
+        requiredResults.push({
+          target,
+          status: "correct",
+          matchedFinger: candidates[exactIndex],
+          delta: { string: 0, fret: 0 },
+          message: `${fingerName(candidates[exactIndex].finger)}가 ${target.string}번줄 ${target.fret}프렛에 있습니다.`,
+        });
+      }
       continue;
     }
 
     const wrongIndex = candidates.findIndex((candidate, index) => {
       if (usedFingerIndexes.has(index)) return false;
-      return candidate.finger === target.finger;
+      return candidate.finger === group.finger;
     });
 
     if (wrongIndex !== -1) {
       usedFingerIndexes.add(wrongIndex);
       const matchedFinger = candidates[wrongIndex];
-      const delta = {
-        string: target.string - matchedFinger.string,
-        fret: target.fret - matchedFinger.fret,
-      };
-      requiredResults.push({
-        target,
-        status: "wrong_position",
-        matchedFinger,
-        delta,
-        message: buildMoveMessage(target, matchedFinger),
-      });
+      for (const target of group.targets) {
+        const delta = {
+          string: target.string - matchedFinger.string,
+          fret: target.fret - matchedFinger.fret,
+        };
+        requiredResults.push({
+          target,
+          status: "wrong_position",
+          matchedFinger,
+          delta,
+          message: buildMoveMessage(target, matchedFinger),
+        });
+      }
       continue;
     }
 
-    requiredResults.push({
-      target,
-      status: "missing",
-      matchedFinger: null,
-      delta: null,
-      message: buildMissingMessage(target, candidates.length),
-    });
+    for (const target of group.targets) {
+      requiredResults.push({
+        target,
+        status: "missing",
+        matchedFinger: null,
+        delta: null,
+        message: buildMissingMessage(target, candidates.length),
+      });
+    }
   }
 
   const extras = candidates
@@ -91,7 +96,7 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
 
   const correctCount = requiredResults.filter((result) => result.status === "correct").length;
   const score = required.length === 0 ? 1 : correctCount / required.length;
-  const isCorrect = required.length > 0 && correctCount === required.length && extras.length === 0;
+  const isCorrect = correctCount === required.length && extras.length === 0;
   const corrections = [
     ...requiredResults
       .filter((result) => result.status === "missing" || result.status === "wrong_position")
@@ -128,6 +133,54 @@ export function evaluateVoicing(detectedFingers, chord, options = {}) {
     corrections,
     signature,
   };
+}
+
+function collectTargetGroups(required) {
+  const consumed = new Set();
+  const groups = [];
+
+  for (const target of required) {
+    const key = `${target.finger}:${target.fret}`;
+    if (consumed.has(key)) continue;
+
+    const matches = required.filter((note) => `${note.finger}:${note.fret}` === key);
+    const shouldGroup = matches.length > 1 && isContiguousStrings(matches);
+    const targets = shouldGroup ? matches : [target];
+
+    groups.push({
+      finger: target.finger,
+      fret: target.fret,
+      targets,
+      strings: targets.map((note) => note.string),
+    });
+
+    if (shouldGroup) consumed.add(key);
+  }
+
+  return groups;
+}
+
+function isContiguousStrings(targets) {
+  const strings = [...new Set(targets.map((target) => target.string))].sort((a, b) => a - b);
+  if (strings.length < 2) return false;
+
+  for (let index = 1; index < strings.length; index += 1) {
+    if (strings[index] !== strings[index - 1] + 1) return false;
+  }
+
+  return true;
+}
+
+function matchesTargetGroup(candidate, group, strictFinger) {
+  if (candidate.fret !== group.fret) return false;
+  if (strictFinger && candidate.finger !== group.finger) return false;
+
+  if (group.strings.length === 1) {
+    return candidate.string === group.strings[0];
+  }
+
+  return candidate.string >= Math.min(...group.strings) &&
+    candidate.string <= Math.max(...group.strings);
 }
 
 function normalizeDetected(detectedFingers) {

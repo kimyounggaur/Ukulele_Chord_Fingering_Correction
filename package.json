@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "test:browser": "playwright test tests/app.spec.js --browser=chromium --reporter=line",
+    "test:browser": "node ./node_modules/@playwright/test/cli.js test tests/app.spec.js --browser=chromium --reporter=line",
     "dev": "npx --yes serve . --listen 5173"
   },
   "devDependencies": {

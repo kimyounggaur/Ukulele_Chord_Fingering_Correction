@@ -1,0 +1,567 @@
+{
+  "generatedFrom": "코드 Source",
+  "note": "Static source images are copied into public/chords and rendered with object-fit: contain.",
+  "count": 80,
+  "images": [
+    {
+      "id": "major-a",
+      "quality": "major",
+      "root": "A",
+      "file": "/chords/major/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\A(크몽).png"
+    },
+    {
+      "id": "major-b",
+      "quality": "major",
+      "root": "B",
+      "file": "/chords/major/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\B(크몽).png"
+    },
+    {
+      "id": "major-c",
+      "quality": "major",
+      "root": "C",
+      "file": "/chords/major/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\C(크몽).png"
+    },
+    {
+      "id": "major-d",
+      "quality": "major",
+      "root": "D",
+      "file": "/chords/major/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\D(크몽).png"
+    },
+    {
+      "id": "major-e",
+      "quality": "major",
+      "root": "E",
+      "file": "/chords/major/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\E(크몽).png"
+    },
+    {
+      "id": "major-f",
+      "quality": "major",
+      "root": "F",
+      "file": "/chords/major/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\F(크몽).png"
+    },
+    {
+      "id": "major-g",
+      "quality": "major",
+      "root": "G",
+      "file": "/chords/major/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major(크몽)\\G(크몽).png"
+    },
+    {
+      "id": "seventh-a",
+      "quality": "seventh",
+      "root": "A",
+      "file": "/chords/seventh/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\A7(크몽).png"
+    },
+    {
+      "id": "seventh-b",
+      "quality": "seventh",
+      "root": "B",
+      "file": "/chords/seventh/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\B7(크몽).png"
+    },
+    {
+      "id": "seventh-c",
+      "quality": "seventh",
+      "root": "C",
+      "file": "/chords/seventh/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\C7(크몽).png"
+    },
+    {
+      "id": "seventh-d",
+      "quality": "seventh",
+      "root": "D",
+      "file": "/chords/seventh/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\D7(크몽).png"
+    },
+    {
+      "id": "seventh-e",
+      "quality": "seventh",
+      "root": "E",
+      "file": "/chords/seventh/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\E7(크몽).png"
+    },
+    {
+      "id": "seventh-f",
+      "quality": "seventh",
+      "root": "F",
+      "file": "/chords/seventh/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\F7(크몽).png"
+    },
+    {
+      "id": "seventh-g",
+      "quality": "seventh",
+      "root": "G",
+      "file": "/chords/seventh/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7th(크몽)\\G7(크몽).png"
+    },
+    {
+      "id": "minor-a",
+      "quality": "minor",
+      "root": "A",
+      "file": "/chords/minor/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Am(크몽).png"
+    },
+    {
+      "id": "minor-b",
+      "quality": "minor",
+      "root": "B",
+      "file": "/chords/minor/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Bm(크몽).png"
+    },
+    {
+      "id": "minor-c",
+      "quality": "minor",
+      "root": "C",
+      "file": "/chords/minor/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Cm(크몽).png"
+    },
+    {
+      "id": "minor-d",
+      "quality": "minor",
+      "root": "D",
+      "file": "/chords/minor/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Dm(크몽).png"
+    },
+    {
+      "id": "minor-e",
+      "quality": "minor",
+      "root": "E",
+      "file": "/chords/minor/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Em(크몽).png"
+    },
+    {
+      "id": "minor-f",
+      "quality": "minor",
+      "root": "F",
+      "file": "/chords/minor/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Fm(크몽).png"
+    },
+    {
+      "id": "minor-g",
+      "quality": "minor",
+      "root": "G",
+      "file": "/chords/minor/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor(크몽)\\Gm(크몽).png"
+    },
+    {
+      "id": "minor7-a",
+      "quality": "minor7",
+      "root": "A",
+      "file": "/chords/minor7/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Am7(크몽).png"
+    },
+    {
+      "id": "minor7-b",
+      "quality": "minor7",
+      "root": "B",
+      "file": "/chords/minor7/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Bm7(크몽).png"
+    },
+    {
+      "id": "minor7-c-sharp",
+      "quality": "minor7",
+      "root": "C#",
+      "file": "/chords/minor7/c-sharp.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\C#m7(크몽).png"
+    },
+    {
+      "id": "minor7-c",
+      "quality": "minor7",
+      "root": "C",
+      "file": "/chords/minor7/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Cm7(크몽).png"
+    },
+    {
+      "id": "minor7-d",
+      "quality": "minor7",
+      "root": "D",
+      "file": "/chords/minor7/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Dm7(크몽).png"
+    },
+    {
+      "id": "minor7-e",
+      "quality": "minor7",
+      "root": "E",
+      "file": "/chords/minor7/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Em7(크몽).png"
+    },
+    {
+      "id": "minor7-f-sharp",
+      "quality": "minor7",
+      "root": "F#",
+      "file": "/chords/minor7/f-sharp.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\F#m7(크몽).png"
+    },
+    {
+      "id": "minor7-f",
+      "quality": "minor7",
+      "root": "F",
+      "file": "/chords/minor7/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Fm7(크몽).png"
+    },
+    {
+      "id": "minor7-g-sharp",
+      "quality": "minor7",
+      "root": "G#",
+      "file": "/chords/minor7/g-sharp.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\G#m7(크몽).png"
+    },
+    {
+      "id": "minor7-g",
+      "quality": "minor7",
+      "root": "G",
+      "file": "/chords/minor7/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7th(크몽)\\Gm7(크몽).png"
+    },
+    {
+      "id": "sus4-a",
+      "quality": "sus4",
+      "root": "A",
+      "file": "/chords/sus4/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Asus4(크몽).png"
+    },
+    {
+      "id": "sus4-b",
+      "quality": "sus4",
+      "root": "B",
+      "file": "/chords/sus4/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Bsus4(크몽).png"
+    },
+    {
+      "id": "sus4-c",
+      "quality": "sus4",
+      "root": "C",
+      "file": "/chords/sus4/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Csus4(크몽).png"
+    },
+    {
+      "id": "sus4-d",
+      "quality": "sus4",
+      "root": "D",
+      "file": "/chords/sus4/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Dsus4(크몽).png"
+    },
+    {
+      "id": "sus4-e",
+      "quality": "sus4",
+      "root": "E",
+      "file": "/chords/sus4/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Esus4(크몽).png"
+    },
+    {
+      "id": "sus4-f",
+      "quality": "sus4",
+      "root": "F",
+      "file": "/chords/sus4/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Fsus4(크몽).png"
+    },
+    {
+      "id": "sus4-g",
+      "quality": "sus4",
+      "root": "G",
+      "file": "/chords/sus4/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\sus4(크몽)\\Gsus4(크몽).png"
+    },
+    {
+      "id": "major7-a",
+      "quality": "major7",
+      "root": "A",
+      "file": "/chords/major7/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\AM7(크몽).png"
+    },
+    {
+      "id": "major7-b",
+      "quality": "major7",
+      "root": "B",
+      "file": "/chords/major7/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\BM7(크몽).png"
+    },
+    {
+      "id": "major7-c",
+      "quality": "major7",
+      "root": "C",
+      "file": "/chords/major7/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\CM7(크몽).png"
+    },
+    {
+      "id": "major7-d",
+      "quality": "major7",
+      "root": "D",
+      "file": "/chords/major7/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\DM7(크몽).png"
+    },
+    {
+      "id": "major7-e",
+      "quality": "major7",
+      "root": "E",
+      "file": "/chords/major7/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\EM7(크몽).png"
+    },
+    {
+      "id": "major7-f",
+      "quality": "major7",
+      "root": "F",
+      "file": "/chords/major7/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\FM7(크몽).png"
+    },
+    {
+      "id": "major7-g",
+      "quality": "major7",
+      "root": "G",
+      "file": "/chords/major7/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\Major 7th(크몽)\\GM7(크몽).png"
+    },
+    {
+      "id": "sixth-a",
+      "quality": "sixth",
+      "root": "A",
+      "file": "/chords/sixth/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\A6(크몽).png"
+    },
+    {
+      "id": "sixth-b",
+      "quality": "sixth",
+      "root": "B",
+      "file": "/chords/sixth/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\B6(크몽).png"
+    },
+    {
+      "id": "sixth-c",
+      "quality": "sixth",
+      "root": "C",
+      "file": "/chords/sixth/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\C6(크몽).png"
+    },
+    {
+      "id": "sixth-d",
+      "quality": "sixth",
+      "root": "D",
+      "file": "/chords/sixth/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\D6(크몽).png"
+    },
+    {
+      "id": "sixth-e",
+      "quality": "sixth",
+      "root": "E",
+      "file": "/chords/sixth/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\E6(크몽).png"
+    },
+    {
+      "id": "sixth-f",
+      "quality": "sixth",
+      "root": "F",
+      "file": "/chords/sixth/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\F6(크몽).png"
+    },
+    {
+      "id": "sixth-g",
+      "quality": "sixth",
+      "root": "G",
+      "file": "/chords/sixth/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\6th(크몽)\\G6(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-a",
+      "quality": "seventh-sus4",
+      "root": "A",
+      "file": "/chords/seventh-sus4/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\A7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-b",
+      "quality": "seventh-sus4",
+      "root": "B",
+      "file": "/chords/seventh-sus4/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\B7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-c",
+      "quality": "seventh-sus4",
+      "root": "C",
+      "file": "/chords/seventh-sus4/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\C7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-d",
+      "quality": "seventh-sus4",
+      "root": "D",
+      "file": "/chords/seventh-sus4/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\D7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-e",
+      "quality": "seventh-sus4",
+      "root": "E",
+      "file": "/chords/seventh-sus4/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\E7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-f",
+      "quality": "seventh-sus4",
+      "root": "F",
+      "file": "/chords/seventh-sus4/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\F7sus4(크몽).png"
+    },
+    {
+      "id": "seventh-sus4-g",
+      "quality": "seventh-sus4",
+      "root": "G",
+      "file": "/chords/seventh-sus4/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\7sus4(크몽)\\G7sus4(크몽).png"
+    },
+    {
+      "id": "add9-a",
+      "quality": "add9",
+      "root": "A",
+      "file": "/chords/add9/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Aadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-b",
+      "quality": "add9",
+      "root": "B",
+      "file": "/chords/add9/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Badd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-c",
+      "quality": "add9",
+      "root": "C",
+      "file": "/chords/add9/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Cadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-d",
+      "quality": "add9",
+      "root": "D",
+      "file": "/chords/add9/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Dadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-e",
+      "quality": "add9",
+      "root": "E",
+      "file": "/chords/add9/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Eadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-f",
+      "quality": "add9",
+      "root": "F",
+      "file": "/chords/add9/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Fadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "add9-g",
+      "quality": "add9",
+      "root": "G",
+      "file": "/chords/add9/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\add9(크몽)\\Gadd9(크몽)[템플릿].png"
+    },
+    {
+      "id": "minor7-flat5-a",
+      "quality": "minor7-flat5",
+      "root": "A",
+      "file": "/chords/minor7-flat5/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Am7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-b",
+      "quality": "minor7-flat5",
+      "root": "B",
+      "file": "/chords/minor7-flat5/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Bm7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-c",
+      "quality": "minor7-flat5",
+      "root": "C",
+      "file": "/chords/minor7-flat5/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Cm7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-d",
+      "quality": "minor7-flat5",
+      "root": "D",
+      "file": "/chords/minor7-flat5/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Dm7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-e",
+      "quality": "minor7-flat5",
+      "root": "E",
+      "file": "/chords/minor7-flat5/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Em7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-f",
+      "quality": "minor7-flat5",
+      "root": "F",
+      "file": "/chords/minor7-flat5/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Fm7-5(크몽).png"
+    },
+    {
+      "id": "minor7-flat5-g",
+      "quality": "minor7-flat5",
+      "root": "G",
+      "file": "/chords/minor7-flat5/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 7-5(크몽)\\Gm7-5(크몽).png"
+    },
+    {
+      "id": "minor6-a",
+      "quality": "minor6",
+      "root": "A",
+      "file": "/chords/minor6/a.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Am6(크몽).png"
+    },
+    {
+      "id": "minor6-b",
+      "quality": "minor6",
+      "root": "B",
+      "file": "/chords/minor6/b.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Bm6(크몽).png"
+    },
+    {
+      "id": "minor6-c",
+      "quality": "minor6",
+      "root": "C",
+      "file": "/chords/minor6/c.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Cm6(크몽).png"
+    },
+    {
+      "id": "minor6-d",
+      "quality": "minor6",
+      "root": "D",
+      "file": "/chords/minor6/d.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Dm6(크몽).png"
+    },
+    {
+      "id": "minor6-e",
+      "quality": "minor6",
+      "root": "E",
+      "file": "/chords/minor6/e.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Em6(크몽).png"
+    },
+    {
+      "id": "minor6-f",
+      "quality": "minor6",
+      "root": "F",
+      "file": "/chords/minor6/f.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Fm6(크몽).png"
+    },
+    {
+      "id": "minor6-g",
+      "quality": "minor6",
+      "root": "G",
+      "file": "/chords/minor6/g.png",
+      "original": "D:\\256G 1\\01 레슨디자이너-반응형 웹사이트\\우쿨렐레 코드 뷰어 웹사이트\\코드 Source\\minor 6th(크몽)\\Gm6(크몽).png"
+    }
+  ]
+}

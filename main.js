@@ -581,7 +581,13 @@ function drawChordDiagram() {
   const chord = getActiveChord() ?? CHORDS.C;
   const width = elements.chordDiagram.width;
   const height = elements.chordDiagram.height;
-  const fretCount = Math.max(4, Math.min(getFretCount(), 5));
+  const maxChordFret = Math.max(
+    0,
+    ...chord.strings
+      .map((note) => note.fret)
+      .filter((fret) => typeof fret === "number"),
+  );
+  const fretCount = Math.min(Math.max(4, getFretCount(), maxChordFret), 12);
   const margin = { left: 44, right: 30, top: 42, bottom: 34 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;

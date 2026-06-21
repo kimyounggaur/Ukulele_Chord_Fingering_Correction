@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>우쿨렐레 코드 운지 교정기</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">G C E A · 4줄 지판 좌표</p>
+          <h1>우쿨렐레 코드 운지 교정기</h1>
+        </div>
+        <div class="topbar-actions">
+          <button id="startCameraButton" class="primary-button" type="button">
+            <i data-lucide="camera"></i>
+            카메라 시작
+          </button>
+          <button id="stopCameraButton" class="ghost-button" type="button" disabled>
+            <i data-lucide="square"></i>
+            정지
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="stage-panel" aria-label="카메라와 오버레이">
+          <div class="stage-toolbar">
+            <div class="status-cluster">
+              <span id="cameraStatus" class="status-pill neutral">대기 중</span>
+              <span id="fpsBadge" class="metric">FPS --</span>
+              <span id="calibrationBadge" class="metric">보정 없음</span>
+            </div>
+            <div class="calibration-controls">
+              <label class="number-field">
+                기준 프렛
+                <input id="fretCountInput" type="number" min="3" max="12" value="5" />
+              </label>
+              <button id="calibrateButton" class="tool-button" type="button">
+                <i data-lucide="crosshair"></i>
+                지판 보정
+              </button>
+              <button id="resetCalibrationButton" class="tool-button" type="button">
+                <i data-lucide="rotate-ccw"></i>
+                초기화
+              </button>
+            </div>
+          </div>
+
+          <div class="camera-stage" id="cameraStage">
+            <video id="cameraVideo" playsinline muted></video>
+            <canvas id="overlayCanvas"></canvas>
+            <div id="stageHint" class="stage-hint">
+              <strong>카메라를 지판 정면에 맞추세요.</strong>
+              <span>손끝이 보이도록 우쿨렐레 지판을 화면 중앙에 크게 둡니다.</span>
+            </div>
+            <div id="calibrationGuide" class="calibration-guide" hidden></div>
+          </div>
+
+          <div class="privacy-strip">
+            <i data-lucide="shield-check"></i>
+            영상은 브라우저 안에서만 처리됩니다. 서버 업로드 없이 로컬에서 손 좌표를 계산합니다.
+          </div>
+        </section>
+
+        <aside class="control-panel" aria-label="코드 판정과 연습">
+          <section class="control-section">
+            <div class="section-heading">
+              <h2>목표 코드</h2>
+              <span id="practiceStateBadge">단일 코드</span>
+            </div>
+            <div class="control-grid">
+              <label>
+                코드
+                <select id="chordSelect"></select>
+              </label>
+              <label>
+                진행
+                <select id="practicePresetSelect">
+                  <option value="core">기본 4코드</option>
+                  <option value="easy">초보 3코드</option>
+                  <option value="single">한 손가락 점검</option>
+                  <option value="custom">직접 입력</option>
+                </select>
+              </label>
+            </div>
+            <label class="full-field">
+              직접 입력
+              <input id="customSequenceInput" type="text" value="C, Am, F, G" />
+            </label>
+            <div class="button-row">
+              <button id="startPracticeButton" class="tool-button" type="button">
+                <i data-lucide="play"></i>
+                연습 시작
+              </button>
+              <button id="finishPracticeButton" class="tool-button" type="button">
+                <i data-lucide="flag"></i>
+                종료
+              </button>
+            </div>
+          </section>
+
+          <section class="control-section compact">
+            <div class="toggle-row">
+              <label class="switch">
+                <input id="strictFingerToggle" type="checkbox" checked />
+                <span></span>
+                손가락 엄격
+              </label>
+              <label class="switch">
+                <input id="muteToggle" type="checkbox" />
+                <span></span>
+                뮤트 검사
+              </label>
+            </div>
+            <div class="toggle-row">
+              <label class="switch">
+                <input id="voiceToggle" type="checkbox" />
+                <span></span>
+                음성 안내
+              </label>
+              <label class="switch">
+                <input id="debugToggle" type="checkbox" />
+                <span></span>
+                디버그
+              </label>
+            </div>
+          </section>
+
+          <section class="control-section feedback-section">
+            <div class="section-heading">
+              <h2>판정</h2>
+              <span id="successCount">성공 0</span>
+            </div>
+            <div id="resultStatus" class="result-status waiting">지판 보정을 완료하세요</div>
+            <div class="score-bar" aria-label="점수">
+              <div id="scoreFill"></div>
+            </div>
+            <div id="scoreText" class="score-text">0/0 · 0%</div>
+            <ol id="correctionList" class="correction-list"></ol>
+          </section>
+
+          <section class="control-section diagram-section">
+            <div class="section-heading">
+              <h2>코드 차트</h2>
+              <span id="nextChordLabel">다음 --</span>
+            </div>
+            <canvas id="chordDiagram" width="320" height="260"></canvas>
+          </section>
+
+          <section id="reportPanel" class="control-section report-section" hidden>
+            <div class="section-heading">
+              <h2>세션 리포트</h2>
+              <span id="reportSummaryBadge"></span>
+            </div>
+            <div id="reportContent" class="report-content"></div>
+          </section>
+
+          <section id="debugPanel" class="control-section debug-section" hidden>
+            <div class="section-heading">
+              <h2>디버그</h2>
+              <span id="rawStableBadge">raw</span>
+            </div>
+            <pre id="debugOutput"></pre>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

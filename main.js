@@ -2,16 +2,12 @@ import { CHORD_ORDER, CHORDS, FINGER_NAMES, PRACTICE_PRESETS, STRING_LABELS } fr
 import {
   DEFAULT_FRET_COUNT,
   canvasEventToPixel,
-  getFretFromU,
   getFretLines,
-  getStringFromV,
   getTargetFretboardPoint,
-  normalizedLandmarkToPixel,
 } from "./src/fretboard.js";
 import { applyHomography, computeHomography, invertHomography } from "./src/homography.js";
-import { evaluateVoicing } from "./src/evaluation.js";
-import { getFingerPosture } from "./src/posture.js";
 import { MovingAverageSmoother, StableEvaluationGate } from "./src/stability.js";
+import { FingeringEngine } from "./src/fingeringEngine.js";
 
 const CALIBRATION_KEY = "ukuleleFingering.calibration.v1";
 const MIRROR_VIDEO = true;
@@ -63,6 +59,12 @@ const elements = {
   practiceStateBadge: document.querySelector("#practiceStateBadge"),
   successCount: document.querySelector("#successCount"),
   resultStatus: document.querySelector("#resultStatus"),
+  qualityGuide: document.querySelector("#qualityGuide"),
+  qualityDot: document.querySelector("#qualityDot"),
+  qualityLabel: document.querySelector("#qualityLabel"),
+  qualityScore: document.querySelector("#qualityScore"),
+  qualityTip: document.querySelector("#qualityTip"),
+  qualityMetrics: document.querySelector("#qualityMetrics"),
   scoreFill: document.querySelector("#scoreFill"),
   scoreText: document.querySelector("#scoreText"),
   correctionList: document.querySelector("#correctionList"),
@@ -78,6 +80,8 @@ const elements = {
 
 const ctx = elements.canvas.getContext("2d");
 const diagramCtx = elements.chordDiagram.getContext("2d");
+const brightnessCanvas = document.createElement("canvas");
+const brightnessCtx = brightnessCanvas.getContext("2d", { willReadFrequently: true });
 
 const state = {
   isMirrored: MIRROR_VIDEO,
@@ -91,6 +95,8 @@ const state = {
   fpsFrames: 0,
   fps: 0,
   handResults: null,
+  engine: new FingeringEngine(),
+  engineOutput: null,
   detectedFingers: [],
   rawEvaluation: null,
   stableInfo: null,
@@ -196,8 +202,10 @@ function stopCamera() {
   state.stream?.getTracks().forEach((track) => track.stop());
   state.stream = null;
   state.handResults = null;
+  state.engineOutput = null;
   state.detectedFingers = [];
   state.smoother.clear();
+  state.engine.reset();
 
   elements.video.srcObject = null;
   elements.startCameraButton.disabled = false;
@@ -283,63 +291,71 @@ function updateFps(now) {
 }
 
 function updateDomainState(now) {
-  state.detectedFingers = detectFingerPositions();
   const chord = getActiveChord();
+  const frameInput = buildFrameInput(now, chord);
+  state.engineOutput = state.engine.process(frameInput);
+  state.detectedFingers = state.engineOutput.observedFingers;
+  const evaluation = state.engineOutput.grading.evaluation;
 
-  if (state.calibration && chord) {
-    state.rawEvaluation = evaluateVoicing(state.detectedFingers, chord, {
-      strictFinger: elements.strictFingerToggle.checked,
-      checkPosture: elements.postureToggle.checked,
-      requireMute: elements.muteToggle.checked,
-    });
+  if (state.calibration && chord && evaluation) {
+    state.rawEvaluation = evaluation;
     state.stableInfo = state.stableGate.update(state.rawEvaluation, now);
     handleStableEvaluation(state.stableInfo, now);
   } else {
     state.rawEvaluation = null;
     state.stableInfo = null;
+    state.stableGate.reset();
   }
 }
 
-function detectFingerPositions() {
-  if (!state.handResults?.landmarks?.length) return [];
+function buildFrameInput(now, chord) {
+  return {
+    t: now,
+    frame: { width: elements.canvas.width, height: elements.canvas.height },
+    isMirrored: state.isMirrored,
+    calibration: state.calibration,
+    hands: getHandsForEngine(),
+    brightnessSample: sampleAverageBrightness(),
+    targetChord: chord,
+    evaluateOptions: {
+      strictFinger: elements.strictFingerToggle.checked,
+      checkPosture: elements.postureToggle.checked,
+      requireMute: elements.muteToggle.checked,
+    },
+    practiceSequence: state.practice.active ? state.practice.sequence : null,
+  };
+}
 
-  const detected = [];
-  state.handResults.landmarks.forEach((landmarks, handIndex) => {
+function getHandsForEngine() {
+  return (state.handResults?.landmarks ?? []).map((landmarks, handIndex) => {
     const handedness = state.handResults.handednesses?.[handIndex]?.[0];
-    for (const tip of FINGERTIPS) {
-      const landmark = landmarks[tip.landmarkIndex];
-      if (!landmark) continue;
-
-      const rawPixel = normalizedLandmarkToPixel(landmark, elements.canvas, state.isMirrored);
-      const pixel = state.smoother.add(`${handIndex}-${tip.finger}`, rawPixel);
-      const mapped = state.calibration
-        ? applyHomography(state.calibration.homographyImageToFretboard, pixel)
-        : null;
-      const stringNumber = mapped ? getStringFromV(mapped.y) : null;
-      const fret = mapped ? getFretFromU(mapped.x, getFretCount()) : null;
-      const inFretboard = Boolean(mapped && stringNumber !== null && fret !== null);
-      const posture = getFingerPosture(landmarks, tip.finger);
-
-      detected.push({
-        trackingId: `${handIndex}-${tip.finger}`,
-        handIndex,
-        handedness: handedness?.categoryName ?? "",
-        confidence: handedness?.score ?? 0,
-        finger: tip.finger,
-        name: tip.name,
-        landmarkIndex: tip.landmarkIndex,
-        rawPixel,
-        pixel,
-        fretboard: mapped ? { u: mapped.x, v: mapped.y } : null,
-        string: stringNumber,
-        fret,
-        inFretboard,
-        posture,
-      });
-    }
+    return {
+      handIndex,
+      handedness: handedness?.categoryName ?? "",
+      score: handedness?.score ?? 0,
+      landmarks,
+    };
   });
+}
 
-  return detected;
+function sampleAverageBrightness() {
+  if (!elements.video.videoWidth || !elements.video.videoHeight || !brightnessCtx) return null;
+
+  try {
+    const width = 32;
+    const height = 18;
+    brightnessCanvas.width = width;
+    brightnessCanvas.height = height;
+    brightnessCtx.drawImage(elements.video, 0, 0, width, height);
+    const { data } = brightnessCtx.getImageData(0, 0, width, height);
+    let total = 0;
+    for (let index = 0; index < data.length; index += 4) {
+      total += 0.2126 * data[index] + 0.7152 * data[index + 1] + 0.0722 * data[index + 2];
+    }
+    return total / (data.length / 4);
+  } catch {
+    return null;
+  }
 }
 
 function drawOverlay() {
@@ -543,6 +559,7 @@ function drawLabel(text, x, y) {
 
 function renderPanels() {
   const displayEvaluation = state.stableInfo?.stableEvaluation ?? state.rawEvaluation;
+  updateQualityGuide();
   updateFeedback(displayEvaluation);
   drawChordDiagram();
   updatePracticeLabels();
@@ -556,6 +573,35 @@ function updateFeedback(evaluation) {
     elements.scoreFill.style.width = "0%";
     elements.scoreText.textContent = "0/0 · 0%";
     elements.correctionList.replaceChildren();
+    return;
+  }
+
+  const grading = state.engineOutput?.grading;
+  if (!evaluation && grading?.match === null) {
+    const quality = state.engineOutput?.quality;
+    const messages = [];
+    if (grading.reason === "quality_gate") {
+      elements.resultStatus.textContent = "채점 보류: 카메라 배치를 먼저 맞춰주세요";
+      messages.push(quality?.primaryTip ?? "카메라 배치를 먼저 맞춰주세요.");
+    } else if (grading.reason === "low_confidence") {
+      elements.resultStatus.textContent = "손끝 위치가 불안정합니다";
+      messages.push("손끝을 목표 프렛 중앙에 두고 1초만 고정하세요.");
+    } else {
+      elements.resultStatus.textContent = "손을 지판 위에 올려주세요";
+    }
+    if (state.engineOutput?.grammar?.ambiguous) {
+      messages.push(getGrammarTip(state.engineOutput.grammar));
+    }
+    elements.resultStatus.className = "result-status waiting";
+    elements.scoreFill.style.width = "0%";
+    elements.scoreText.textContent = `보류 · ${grading.reason}`;
+    elements.correctionList.replaceChildren(
+      ...messages.map((message) => {
+        const li = document.createElement("li");
+        li.textContent = message;
+        return li;
+      }),
+    );
     return;
   }
 
@@ -577,6 +623,9 @@ function updateFeedback(evaluation) {
   const messages = evaluation.isCorrect
     ? ["정확합니다. 이 자세를 1초만 유지하세요."]
     : evaluation.corrections.slice(0, 3).map((correction) => correction.message);
+  if (state.engineOutput?.grammar?.ambiguous) {
+    messages.push(getGrammarTip(state.engineOutput.grammar));
+  }
 
   elements.correctionList.replaceChildren(
     ...messages.map((message) => {
@@ -585,6 +634,53 @@ function updateFeedback(evaluation) {
       return li;
     }),
   );
+}
+
+function updateQualityGuide() {
+  const quality = state.engineOutput?.quality;
+  if (!quality) {
+    elements.qualityDot.className = "quality-dot neutral";
+    elements.qualityLabel.textContent = "준비도 --";
+    elements.qualityScore.textContent = "--%";
+    elements.qualityTip.textContent = "카메라를 시작하면 배치 상태를 확인합니다.";
+    elements.qualityMetrics.replaceChildren();
+    return;
+  }
+
+  const label = {
+    good: "카메라 준비 완료",
+    warn: "조금만 조정하면 더 정확해져요",
+    bad: "채점 보류",
+  }[quality.level] ?? "준비도 확인";
+  const metricLabels = {
+    detection: "검출",
+    handSize: "손 크기",
+    frameMargin: "화면 여백",
+    brightness: "밝기",
+    motion: "흔들림",
+    fretboardPerspective: "지판 각도",
+  };
+
+  elements.qualityDot.className = `quality-dot ${quality.level}`;
+  elements.qualityLabel.textContent = label;
+  elements.qualityScore.textContent = `${quality.percent}%`;
+  elements.qualityTip.textContent = quality.primaryTip;
+  elements.qualityMetrics.replaceChildren(
+    ...Object.entries(metricLabels).map(([key, labelText]) => {
+      const item = document.createElement("span");
+      const value = Math.round((quality.metrics[key] ?? 0) * 100);
+      item.textContent = `${labelText} ${value}%`;
+      return item;
+    }),
+  );
+}
+
+function getGrammarTip(grammar) {
+  const alternatives = grammar.alternatives
+    .slice(0, 2)
+    .map((candidate) => candidate.chordId)
+    .join(" / ");
+  return `비슷한 코드로 감지됩니다: ${alternatives}. 손끝을 목표 프렛 중앙에 고정하세요.`;
 }
 
 function drawChordDiagram() {
@@ -756,8 +852,10 @@ function handleChordChange() {
 
 function resetEvaluationGate() {
   state.stableGate.reset();
+  state.engine.reset();
   state.rawEvaluation = null;
   state.stableInfo = null;
+  state.engineOutput = null;
 }
 
 function startPractice() {
@@ -904,11 +1002,16 @@ function updateDebugVisibility() {
   elements.rawStableBadge.textContent = state.stableInfo?.stableEvaluation ? "stable" : "raw";
   elements.debugOutput.textContent = JSON.stringify(
     {
+      quality: state.engineOutput?.quality ?? null,
       detectedFingers: state.detectedFingers.map((finger) => ({
         finger: finger.name,
         string: finger.string,
         fret: finger.fret,
         inFretboard: finger.inFretboard,
+        pressProbability: numberOrNull(finger.pressProbability),
+        pSmooth: numberOrNull(finger.pSmooth),
+        pressState: finger.pressState,
+        lowConfidence: finger.lowConfidence,
         posture: finger.posture,
         uv: finger.fretboard
           ? {
@@ -917,12 +1020,18 @@ function updateDebugVisibility() {
             }
           : null,
       })),
+      grammar: state.engineOutput?.grammar ?? null,
+      grading: state.engineOutput?.grading ?? null,
       rawEvaluation: state.rawEvaluation,
       stableEvaluation: state.stableInfo?.stableEvaluation ?? null,
     },
     null,
     2,
   );
+}
+
+function numberOrNull(value) {
+  return Number.isFinite(value) ? Number(value.toFixed(3)) : null;
 }
 
 function getActiveChord() {

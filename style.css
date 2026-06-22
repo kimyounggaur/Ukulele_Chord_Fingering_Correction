@@ -414,6 +414,77 @@ button svg,
   font-weight: 800;
 }
 
+.quality-guide {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #111419;
+  border: 1px solid var(--line);
+}
+
+.quality-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quality-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--soft);
+  box-shadow: 0 0 0 4px rgba(115, 125, 139, 0.14);
+  flex: 0 0 auto;
+}
+
+.quality-dot.good {
+  background: var(--green);
+  box-shadow: 0 0 0 4px rgba(73, 209, 125, 0.14);
+}
+
+.quality-dot.warn {
+  background: var(--amber);
+  box-shadow: 0 0 0 4px rgba(241, 196, 91, 0.14);
+}
+
+.quality-dot.bad {
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(242, 107, 107, 0.14);
+}
+
+#qualityScore {
+  margin-left: auto;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+#qualityTip {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.quality-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.quality-metrics span {
+  min-width: 0;
+  padding: 6px 7px;
+  border-radius: 6px;
+  background: #0b0d11;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .result-status.correct {
   color: var(--green);
   border-color: rgba(73, 209, 125, 0.58);
@@ -536,5 +607,9 @@ button svg,
     position: absolute;
     inset: auto 10px 10px 10px;
     display: grid;
+  }
+
+  .quality-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
